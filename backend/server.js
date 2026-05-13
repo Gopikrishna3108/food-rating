@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const https = require('https');
 const db = require('./database');
 
 const app = express();
@@ -18,27 +19,40 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
 // Function to send message to Telegram
-async function sendToTelegram(message) {
+function sendToTelegram(message) {
     if (!BOT_TOKEN || !CHAT_ID) {
-        console.warn("Telegram BOT_TOKEN or CHAT_ID missing. Skipping Telegram notification.");
+        console.warn("Telegram BOT_TOKEN or CHAT_ID missing. Did you add them in Render Environment Variables?");
         return;
     }
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: message,
-            })
-        });
-        if (!response.ok) {
-            console.error("Failed to send message to Telegram:", await response.text());
+
+    const data = JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message,
+    });
+
+    const options = {
+        hostname: 'api.telegram.org',
+        port: 443,
+        path: `/bot${BOT_TOKEN}/sendMessage`,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
         }
-    } catch (error) {
+    };
+
+    const req = https.request(options, (res) => {
+        if (res.statusCode !== 200) {
+            console.error(`Failed to send message to Telegram. Status Code: ${res.statusCode}`);
+        }
+    });
+
+    req.on('error', (error) => {
         console.error("Error sending to Telegram:", error);
-    }
+    });
+
+    req.write(data);
+    req.end();
 }
 
 // API endpoint to receive ratings
