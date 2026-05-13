@@ -55,6 +55,15 @@ function sendToTelegram(message) {
     req.end();
 }
 
+// Debug route to verify environment variables
+app.get('/api/test-env', (req, res) => {
+    res.json({
+        hasBotToken: !!process.env.BOT_TOKEN,
+        hasChatId: !!process.env.CHAT_ID,
+        chatIdValue: process.env.CHAT_ID ? process.env.CHAT_ID.substring(0, 4) + '...' : null
+    });
+});
+
 // API endpoint to receive ratings
 app.post('/api/rate', (req, res) => {
     const { name, stars, experience } = req.body;
