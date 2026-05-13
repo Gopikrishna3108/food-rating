@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Feedback | Rate Your Experience</title>
+    <meta name="description" content="Share your food experience with us through our quick rating form.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    
+    <div class="container">
+        <div class="form-wrapper">
+            <header>
+                <h1>Rate Your Dish</h1>
+                <p>We'd love to hear about your gourmet experience.</p>
+            </header>
+            
+            <form id="rating-form">
+                <div class="input-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Star Rating</label>
+                    <div class="star-rating" id="star-rating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="stars" name="stars" required>
+                    <div class="error-msg" id="stars-error">Please select a rating</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="experience">Overall Experience</label>
+                    <textarea id="experience" name="experience" rows="4" placeholder="Tell us what you loved (or didn't)..."></textarea>
+                </div>
+                
+                <button type="submit" id="submit-btn">
+                    <span>Submit Rating</span>
+                    <div class="spinner"></div>
+                </button>
+            </form>
+
+            <div id="success-message" class="hidden">
+                <div class="success-icon">✓</div>
+                <h2>Thank You!</h2>
+                <p>Your rating has been submitted successfully.</p>
+                <button id="reset-btn">Rate Another</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
